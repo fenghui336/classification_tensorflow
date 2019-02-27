@@ -7,7 +7,7 @@ classes = {'apple','orange'}
 
 
 def createdata():
-    filename="myself_train.tfrecords"      #要生成的文件名以及地址，不指定绝对地址的话就是在建立在工程目录下
+    filename="./data/myself_train.tfrecords"      #要生成的文件名以及地址，不指定绝对地址的话就是在建立在工程目录下
     writer = tf.python_io.TFRecordWriter(filename)  # 使用该函数创建一个tfrecord文件
     height = 256
     width = 256
