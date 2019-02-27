@@ -3,7 +3,7 @@ from PIL import Image
 import os
 import matplotlib.pyplot as plt
 cwd = '/Users/fenghui/PycharmProjects/vgg_tf/image/train/'
-classes = {'apple','cat','horse','orange'}
+classes = {'apple','orange'}
 
 
 def createdata():
@@ -38,9 +38,9 @@ def read_and_decode(filename, batch_size):  # 读取tfrecords
     img = tf.reshape(img, [256, 256, 3])  # reshape为128*128的3通道图片
     img = tf.cast(img, tf.float32) * (1. / 255)  # 将tensor数据转化为float32格式
     label = tf.cast(features['label'], tf.int32)  # 将label标签转化为int32格式
-    label = tf.one_hot(label, 4)   #对标签做one hot处理：假如共有4个类，若标签为3，做one hot之后则为[0 0 0 1],若标签为0，则[1 0 0 0]
+    label = tf.one_hot(label, 2)   #对标签做one hot处理：假如共有4个类，若标签为3，做one hot之后则为[0 0 0 1],若标签为0，则[1 0 0 0]
     # img_batch, label_batch = tf.train.batch([img,label],batch_size,1,50)
-    img_batch, label_batch = tf.train.shuffle_batch([img,label],batch_size,10,2)     #打乱排序输出batch
+    img_batch, label_batch = tf.train.shuffle_batch([img,label],batch_size,500,100)     #打乱排序输出batch
     return img_batch, label_batch
 
 
