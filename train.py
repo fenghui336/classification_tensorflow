@@ -1,9 +1,9 @@
 import tensorflow as tf
 
-classes = 5
+classes = 2
 image_size = 256
 train_path = './my_train.tfrecords'
-test_path = './myself_test.tfrecords'
+#test_path = './myself_test.tfrecords'
 
 
 def compute_accuracy(v_xs,v_ys):
