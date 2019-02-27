@@ -2,7 +2,7 @@ import tensorflow as tf
 
 classes = 2
 image_size = 256
-train_path = './my_train.tfrecords'
+train_path = './data/my_train.tfrecords'
 #test_path = './myself_test.tfrecords'
 
 
@@ -81,19 +81,21 @@ loss = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits_v2(
 ),name='loss')
 train = tf.train.AdamOptimizer(1e-4).minimize(loss,name='train')
 
+saver = tf.train.Saver()
 with tf.Session() as sess:
     sess.run(tf.group(tf.global_variables_initializer(),tf.local_variables_initializer()))
     coord = tf.train.Coordinator()
     threads = tf.train.start_queue_runners(coord=coord,sess=sess)
     for i in range(50):
         img_xs,label_xs = sess.run([img_train,labels_train])
+        img_test_xs,label_test_xs = sess.run([img_test,labels_test])
         sess.run(train,feed_dict={
             x:img_xs,y:label_xs,keep_prob:0.7
         })
 
         if i%1 == 0:
-            img_test_xs,label_test_xs = sess.run([img_test,labels_test])
             print(compute_accuracy(img_test_xs,label_test_xs))
     coord.request_stop()
     coord.join(threads)
+    saver.save(sess,'./checkpoint/model.ckpt')
     sess.close()
